@@ -22,7 +22,7 @@ function varargout = gui(varargin)
 
 % Edit the above text to modify the response to help gui
 
-% Last Modified by GUIDE v2.5 21-Feb-2018 13:36:33
+% Last Modified by GUIDE v2.5 28-Feb-2018 12:24:11
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -207,10 +207,12 @@ G = img(:, :, 2);
 B = img(:, :, 3);
 flip_horizontal = zeros(size(img,1), size(img,2), 'uint8');
 for x=1:size(img,1)
+    a = size(img,2);
     for y=1:size(img,2)
-        flip_horizontal(x, y, 1) = R(x,(size(img,2)+1)-y);
-        flip_horizontal(x, y, 2) = G(x,(size(img,2)+1)-y);
-        flip_horizontal(x, y, 3) = B(x,(size(img,2)+1)-y);
+        flip_horizontal(x, y, 1) = R(x, a);
+        flip_horizontal(x, y, 2) = G(x, a);
+        flip_horizontal(x, y, 3) = B(x, a);
+        a = a - 1;
     end
 end
 img = flip_horizontal;
@@ -228,12 +230,14 @@ R = img(:, :, 1);
 G = img(:, :, 2);
 B = img(:, :, 3);
 flip_vertical = zeros(size(img,1), size(img,2), 'uint8');
+a = size(img,1);
 for x=1:size(img,1)
     for y=1:size(img,2)
-        flip_vertical(x, y, 1) = R((size(img,1)+1)-x,y);
-        flip_vertical(x, y, 2) = G((size(img,1)+1)-x,y);
-        flip_vertical(x, y, 3) = B((size(img,1)+1)-x,y);
+        flip_vertical(x, y, 1) = R(a,y);
+        flip_vertical(x, y, 2) = G(a,y);
+        flip_vertical(x, y, 3) = B(a,y);
     end
+    a = a - 1;
 end
 img = flip_vertical;
 axes(handles.axes2);
@@ -259,9 +263,9 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-% --- Executes on button press in penerangan_ditambah.
-function penerangan_ditambah_Callback(hObject, eventdata, handles)
-% hObject    handle to penerangan_ditambah (see GCBO)
+% --- Executes on button press in brighter_plus.
+function brighter_plus_Callback(hObject, eventdata, handles)
+% hObject    handle to brighter_plus (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global img;
@@ -287,9 +291,9 @@ else
 end
 
 
-% --- Executes on button press in penerangan_dikali.
-function penerangan_dikali_Callback(hObject, eventdata, handles)
-% hObject    handle to penerangan_dikali (see GCBO)
+% --- Executes on button press in brighter_multiply.
+function brighter_multiply_Callback(hObject, eventdata, handles)
+% hObject    handle to brighter_multiply (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global img;
@@ -315,9 +319,9 @@ else
 end
 
 
-% --- Executes on button press in penggelapan_dikurang.
-function penggelapan_dikurang_Callback(hObject, eventdata, handles)
-% hObject    handle to penggelapan_dikurang (see GCBO)
+% --- Executes on button press in darker_minus.
+function darker_minus_Callback(hObject, eventdata, handles)
+% hObject    handle to darker_minus (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global img;
@@ -342,9 +346,9 @@ else
     imshow(penggelapan_dikurang);
 end
 
-% --- Executes on button press in penggelapan_dibagi.
-function penggelapan_dibagi_Callback(hObject, eventdata, handles)
-% hObject    handle to penggelapan_dibagi (see GCBO)
+% --- Executes on button press in darker_divided_by.
+function darker_divided_by_Callback(hObject, eventdata, handles)
+% hObject    handle to darker_divided_by (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global img;
@@ -504,3 +508,123 @@ function crop_xmax_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in histogram.
+function histogram_Callback(hObject, eventdata, handles)
+% hObject    handle to histogram (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+count_R = zeros(256,1);
+count_G = zeros(256,1);
+count_B = zeros(256,1);
+R = img(:, :, 1);
+G = img(:, :, 2);
+B = img(:, :, 3);
+for a=1:256
+    for x=1:size(img,1)
+        for y=1:size(img,2)
+            if (a-1)==R(x,y)
+                count_R(a,1) = count_R(a,1)+1;
+            end
+            if (a-1)==G(x,y)
+                count_G(a,1) = count_R(a,1)+1;
+            end
+            if (a-1)==G(x,y)
+                count_B(a,1) = count_R(a,1)+1;
+            end 
+        end 
+    end
+end
+axes(handles.axes2);
+imshow(img);
+figure
+subplot(2,2,1);
+bar(count_R);
+xlim([1 256]);
+title('Histogram R');
+subplot(2,2,2);
+bar(count_G);
+xlim([1 256]);
+title('Histogram G');
+subplot(2,2,3);
+bar(count_B);
+xlim([1 256]);
+title('Histogram B');
+
+% --- Executes on button press in rotate_90.
+function rotate_90_Callback(hObject, eventdata, handles)
+% hObject    handle to rotate_90 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+global rotate_90;
+R = img(:, :, 1);
+G = img(:, :, 2);
+B = img(:, :, 3);
+rotate_90 = zeros(size(img,2), size(img,1), 'uint8');
+a = size(img,1);
+for x=1:size(img,1)
+    for y=1:size(img,2)
+        rotate_90(y, a, 1) = R(x,y);
+        rotate_90(y, a, 2) = G(x,y);
+        rotate_90(y, a, 3) = B(x,y);
+    end
+    a = a - 1;
+end
+img = rotate_90;
+axes(handles.axes2);
+imshow(rotate_90);
+
+% --- Executes on button press in rotate_180.
+function rotate_180_Callback(hObject, eventdata, handles)
+% hObject    handle to rotate_180 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+global rotate_180;
+R = img(:, :, 1);
+G = img(:, :, 2);
+B = img(:, :, 3);
+rotate_180 = zeros(size(img,1), size(img,2), 'uint8');
+a = size(img,1);
+for x=1:size(img,1)
+    b = size(img, 2);
+    for y=1:size(img,2)
+        rotate_180(x, y, 1) = R(a,b);
+        rotate_180(x, y, 2) = G(a,b);
+        rotate_180(x, y, 3) = B(a,b);
+        b = b - 1;
+    end
+    a = a - 1;
+end
+img = rotate_180;
+axes(handles.axes2);
+imshow(rotate_180);
+
+% --- Executes on button press in rotate_270.
+function rotate_270_Callback(hObject, eventdata, handles)
+% hObject    handle to rotate_270 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+global rotate_270;
+R = img(:, :, 1);
+G = img(:, :, 2);
+B = img(:, :, 3);
+rotate_270 = zeros(size(img,2), size(img,1), 'uint8');
+a = size(img,1);
+for x=1:size(img,1)
+    b = size(img,2);
+    for y=1:size(img,2)
+        rotate_270(y, x, 1) = R(x,b);
+        rotate_270(y, x, 2) = G(x,b);
+        rotate_270(y, x, 3) = B(x,b);
+        b = b - 1;
+    end
+    a = a - 1;
+end
+img = rotate_270;
+axes(handles.axes2);
+imshow(rotate_270);
