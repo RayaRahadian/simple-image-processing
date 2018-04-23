@@ -22,7 +22,7 @@ function varargout = gui(varargin)
 
 % Edit the above text to modify the response to help gui
 
-% Last Modified by GUIDE v2.5 19-Mar-2018 13:42:43
+% Last Modified by GUIDE v2.5 22-Apr-2018 21:06:02
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -190,7 +190,9 @@ function original_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global img;
 global original_img;
+global BW;
 img = original_img;
+BW = im2bw(img, 0.5);
 axes(handles.axes2);
 imshow(img);
 
@@ -2386,3 +2388,704 @@ end
 img = sharp;
 axes(handles.axes2);
 imshow(sharp);
+
+
+% --- Executes on button press in median_noise_filter_button.
+function median_noise_filter_button_Callback(hObject, eventdata, handles)
+% hObject    handle to median_noise_filter_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+global median_noise_filter;
+R = img(:, :, 1);
+R = double(R);
+G = img(:, :, 2);
+G = double(G);
+B = img(:, :, 3);
+B = double(B);
+median_noise_filter = zeros(size(img,1), size(img,2), 'uint8');
+max_height = size(img,1);
+max_width = size(img,2);
+for x=1:size(img, 1)
+    for y=1:size(img, 2)
+        if (x ~= max_height)
+            if (y ~= max_width)
+                %R 
+                a1 = R(x,y);
+                a2 = R(x,y+1);
+                a3 = R(x+1,y);
+                a4 = R(x+1,y+1);
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = G(x,y+1);
+                a3 = G(x+1,y);
+                a4 = G(x+1,y+1);
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = B(x,y+1);
+                a3 = B(x+1,y);
+                a4 = B(x+1,y+1);
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,3) = sum;
+                
+            else
+                %R 
+                a1 = R(x,y);
+                a2 = 0;
+                a3 = R(x+1,y);
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = 0;
+                a3 = G(x+1,y);
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = 0;
+                a3 = B(x+1,y);
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,3) = sum;
+            end
+        else
+            if (y ~= max_width)
+                %R 
+                a1 = R(x,y);
+                a2 = R(x,y+1);
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = G(x,y+1);
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = B(x,y+1);
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,3) = sum;
+                
+            else
+                %R 
+                a1 = R(x,y);
+                a2 = 0;
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = 0;
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = 0;
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = round(((sorted_array(2)+sorted_array(3))/2));
+                median_noise_filter(x,y,3) = sum;
+            end
+        end
+    end
+end
+img = median_noise_filter;
+axes(handles.axes2);
+imshow(median_noise_filter);
+
+% --- Executes on button press in mean_noise_filter_button.
+function mean_noise_filter_button_Callback(hObject, eventdata, handles)
+% hObject    handle to mean_noise_filter_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+global mean_noise_filter;
+R = img(:, :, 1);
+R = double(R);
+G = img(:, :, 2);
+G = double(G);
+B = img(:, :, 3);
+B = double(B);
+mean_noise_filter = zeros(size(img,1), size(img,2), 'uint8');
+max_height = size(img,1);
+max_width = size(img,2);
+for x=1:size(img, 1)
+    for y=1:size(img, 2)
+        if (x ~= max_height)
+            if (y ~= max_width)
+                %R 
+                a1 = R(x,y);
+                a2 = R(x,y+1);
+                a3 = R(x+1,y);
+                a4 = R(x+1,y+1);
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = G(x,y+1);
+                a3 = G(x+1,y);
+                a4 = G(x+1,y+1);
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = B(x,y+1);
+                a3 = B(x+1,y);
+                a4 = B(x+1,y+1);
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,3) = sum;
+                
+            else
+                %R 
+                a1 = R(x,y);
+                a2 = 0;
+                a3 = R(x+1,y);
+                a4 = 0;
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = 0;
+                a3 = G(x+1,y);
+                a4 = 0;
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = 0;
+                a3 = B(x+1,y);
+                a4 = 0;
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,3) = sum;
+            end
+        else
+            if (y ~= max_width)
+                %R 
+                a1 = R(x,y);
+                a2 = R(x,y+1);
+                a3 = 0;
+                a4 = 0;
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = G(x,y+1);
+                a3 = 0;
+                a4 = 0;
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = B(x,y+1);
+                a3 = 0;
+                a4 = 0;
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,3) = sum;
+                
+            else
+                %R 
+                a1 = R(x,y);
+                a2 = 0;
+                a3 = 0;
+                a4 = 0;
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = 0;
+                a3 = 0;
+                a4 = 0;
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = 0;
+                a3 = 0;
+                a4 = 0;
+                sum = (a1+a2+a3+a4)/4;
+                mean_noise_filter(x,y,3) = sum;
+            end
+        end
+    end
+end
+img = mean_noise_filter;
+axes(handles.axes2);
+imshow(mean_noise_filter);
+
+
+% --- Executes on button press in modus_noise_filter_button.
+function modus_noise_filter_button_Callback(hObject, eventdata, handles)
+% hObject    handle to modus_noise_filter_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+global modus_noise_filter;
+R = img(:, :, 1);
+R = double(R);
+G = img(:, :, 2);
+G = double(G);
+B = img(:, :, 3);
+B = double(B);
+modus_noise_filter = zeros(size(img,1), size(img,2), 'uint8');
+max_height = size(img,1);
+max_width = size(img,2);
+for x=1:size(img, 1)
+    for y=1:size(img, 2)
+        if (x ~= max_height)
+            if (y ~= max_width)
+                %R 
+                a1 = R(x,y);
+                a2 = R(x,y+1);
+                a3 = R(x+1,y);
+                a4 = R(x+1,y+1);
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = G(x,y+1);
+                a3 = G(x+1,y);
+                a4 = G(x+1,y+1);
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = B(x,y+1);
+                a3 = B(x+1,y);
+                a4 = B(x+1,y+1);
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,3) = sum;
+                
+            else
+                %R 
+                a1 = R(x,y);
+                a2 = 0;
+                a3 = R(x+1,y);
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = 0;
+                a3 = G(x+1,y);
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = 0;
+                a3 = B(x+1,y);
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,3) = sum;
+            end
+        else
+            if (y ~= max_width)
+                %R 
+                a1 = R(x,y);
+                a2 = R(x,y+1);
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = G(x,y+1);
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = B(x,y+1);
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,3) = sum;
+                
+            else
+                %R 
+                a1 = R(x,y);
+                a2 = 0;
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,1) = sum;
+                
+                %G 
+                a1 = G(x,y);
+                a2 = 0;
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,2) = sum;
+                
+                %B 
+                a1 = B(x,y);
+                a2 = 0;
+                a3 = 0;
+                a4 = 0;
+                array = [a1 a2 a3 a4];
+                sorted_array = sort(array);
+                sum = mode(sorted_array);
+                modus_noise_filter(x,y,3) = sum;
+            end
+        end
+    end
+end
+img = modus_noise_filter;
+axes(handles.axes2);
+imshow(modus_noise_filter);
+
+
+
+function seed_growth_x_Callback(hObject, eventdata, handles)
+% hObject    handle to seed_growth_x (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of seed_growth_x as text
+%        str2double(get(hObject,'String')) returns contents of seed_growth_x as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function seed_growth_x_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to seed_growth_x (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in seed_growth_button.
+function seed_growth_button_Callback(hObject, eventdata, handles)
+% hObject    handle to seed_growth_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+global seed_growth;
+seed_growth = zeros(size(img,1), size(img,2), 'uint8');
+x = str2double(get(handles.seed_growth_x, 'String')); 
+y = str2double(get(handles.seed_growth_y, 'String'));
+seed_growth(x,y,1) = 255;
+seed_growth(x,y,2) = 255;
+seed_growth(x,y,3) = 255;
+seed = 30;
+count_growth = 0;
+loop = 0;
+while loop ~= 1
+    for k=3:size(img, 1)-3
+        for m=3:size(img, 2)-3
+            for z=1:size(img, 3)
+                if ((img(x,y,z) - seed <= img(k-1,m,z)) && (img(k-1,m,z) <= img(x,y,z) + seed))
+                    if ((seed_growth(k-2,m,z) == 255) || (seed_growth(k-1,m+1,z) == 255) || (seed_growth(k-1,m-1,z) == 255) || (seed_growth(k,m,z) == 255))
+                        seed_growth(k,m,z) = 255;
+                        count_growth = 1;
+                    end
+                end
+                if ((img(x,y,z) - seed <= img(k,m-1,z)) && (img(k,m-1,z) <= img(x,y,z) + seed))
+                    if ((seed_growth(k-1,m-1,z) == 255) || (seed_growth(k,m,z) == 255) || (seed_growth(k,m-2,z) == 255) || (seed_growth(k+1,m-1,z) == 255))
+                        seed_growth(k,m,z) = 255;
+                        count_growth = 1;
+                    end
+                end
+                if ((img(x,y,z) - seed <= img(k,m+1,z)) && (img(k,m+1,z) <= img(x,y,z) + seed))
+                    if ((seed_growth(k-1,m+1,z) == 255) || (seed_growth(k-1,m+2,z) == 255) || (seed_growth(k-1,m-1,z) == 255) || (seed_growth(k+1,m+1,z) == 255))
+                        seed_growth(k,m,z) = 255;
+                        count_growth = 1;
+                    end
+                end
+                if ((img(x,y,z) - seed <= img(k+1,m,z)) && (img(k+1,m,z) <= img(x,y,z) + seed))
+                    if ((seed_growth(k,m,z) == 255) || (seed_growth(k+1,m+1,z) == 255) || (seed_growth(k+1,m-1,z) == 255) || (seed_growth(k+2,m,z) == 255))
+                        seed_growth(k,m,z) = 255;
+                        count_growth = 1;
+                    end
+                end
+            end
+            if (count_growth ~= 1)
+                count_growth = 0;
+            end
+        end
+        if (count_growth == 0)
+            loop = 1;
+        end
+    end
+end
+axes(handles.axes2);
+imshow(seed_growth);
+
+
+
+function seed_growth_y_Callback(hObject, eventdata, handles)
+% hObject    handle to seed_growth_y (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of seed_growth_y as text
+%        str2double(get(hObject,'String')) returns contents of seed_growth_y as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function seed_growth_y_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to seed_growth_y (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function min_threshold_Callback(hObject, eventdata, handles)
+% hObject    handle to min_threshold (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of min_threshold as text
+%        str2double(get(hObject,'String')) returns contents of min_threshold as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function min_threshold_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to min_threshold (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in threshold_button.
+function threshold_button_Callback(hObject, eventdata, handles)
+% hObject    handle to threshold_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+global threshold;
+threshold = zeros(size(img,1), size(img,2), 'uint8');
+min = str2double(get(handles.min_threshold, 'String')); 
+max = str2double(get(handles.max_threshold, 'String')); 
+for x=1:size(img, 1)
+    for y=1:size(img, 2)
+        masuk_threshold = 0;
+        for z=1:size(img, 3)
+            if ((img(x,y,z) >= min) && (img(x,y,z) <= max))
+                masuk_threshold = masuk_threshold+1;
+            end
+        end
+        if (masuk_threshold == 3)
+            for z=1:size(img, 3)
+                threshold(x,y,z) = 255;
+            end
+        end
+    end
+end
+axes(handles.axes2);
+imshow(threshold);
+
+
+function max_threshold_Callback(hObject, eventdata, handles)
+% hObject    handle to max_threshold (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of max_threshold as text
+%        str2double(get(hObject,'String')) returns contents of max_threshold as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function max_threshold_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to max_threshold (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in dilation_button.
+function dilation_button_Callback(hObject, eventdata, handles)
+% hObject    handle to dilation_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+global BW;
+global dilation;
+if isempty(BW) == 1
+    BW = im2bw(img, 0.5);
+    dilation = BW;
+else
+    dilation = BW;
+end
+for x=1:size(img,1)
+    for y=1:size(img,2)
+        if x == 1
+            if y ~= size(img,2)
+                if ((BW(x,y) == 1) || (BW(x,y+1) == 1))
+                    dilation(x,y) = 1;
+                end
+            else
+                if (BW(x,y) == 1)
+                    dilation(x,y) = 1;
+                end
+            end
+        else
+            if y ~= size(img,2)
+                if ((BW(x-1,y) == 1) || (BW(x,y) == 1) || (BW(x,y+1) == 1))
+                    dilation(x,y) = 1;
+                end
+            else
+                if ((BW(x-1,y) == 1) || (BW(x,y) == 1))
+                    dilation(x,y) = 1;
+                end
+            end
+        end
+    end
+end
+BW = dilation;
+axes(handles.axes2);
+imshow(dilation);
+
+
+% --- Executes on button press in erosion_button.
+function erosion_button_Callback(hObject, eventdata, handles)
+% hObject    handle to erosion_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+global BW;
+global erosion;
+if isempty(BW) == 1
+    BW = im2bw(img, 0.5);
+    erosion = BW;
+else
+    erosion = BW;
+end
+for x=1:size(img,1)
+    for y=1:size(img,2)
+        if x == 1
+            erosion(x,y) = 0;
+        else
+            if y == 1
+                erosion(x,y) = 0;
+            elseif y == size(img,2)
+                erosion(x,y) = 0;
+            else
+                if ((BW(x-1,y) ~= 1) || (BW(x-1,y+1) == 0) || (BW(x,y) ~= 1) || (BW(x,y+1) ~= 1))
+                    erosion(x,y) = 0;
+                end
+            end
+        end
+    end
+end
+BW = erosion;
+axes(handles.axes2);
+imshow(erosion);
+
+
+% --- Executes on button press in black_white_button.
+function black_white_button_Callback(hObject, eventdata, handles)
+% hObject    handle to black_white_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global img;
+global BW;
+BW = im2bw(img, 0.5);
+axes(handles.axes2);
+imshow(BW);
